@@ -94,18 +94,18 @@ export default function CalendarInstructions() {
     <div className="space-y-8">
       {/* Calendar Setup */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-800 mb-3">
+        <h3 className="text-sm font-semibold text-gray-200 mb-3">
           Add to Your Calendar
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {CALENDARS.map((cal, i) => (
-            <div key={cal.name} className="border border-gray-100 rounded-xl overflow-hidden">
+            <div key={cal.name} className="border border-white/[0.08] rounded-xl overflow-hidden">
               <button
                 onClick={() => setOpenCalendar(openCalendar === i ? null : i)}
-                className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50/80 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.04] transition-colors"
               >
-                <span className="text-emerald-600">{cal.icon}</span>
-                <span className="text-sm font-medium text-gray-700 flex-1">{cal.name}</span>
+                <span className="text-emerald-400">{cal.icon}</span>
+                <span className="text-sm font-medium text-gray-300 flex-1">{cal.name}</span>
                 <svg
                   className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${openCalendar === i ? "rotate-180" : ""}`}
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
@@ -115,7 +115,7 @@ export default function CalendarInstructions() {
               </button>
               {openCalendar === i && (
                 <div className="px-4 pb-3 animate-fade-in">
-                  <ol className="space-y-1.5 text-sm text-gray-600">
+                  <ol className="space-y-1.5 text-sm text-gray-400">
                     {cal.steps.map((step, j) => (
                       <li key={j} className="flex gap-2">
                         <span className="text-emerald-500 font-semibold text-xs mt-0.5">{j + 1}.</span>
@@ -132,17 +132,17 @@ export default function CalendarInstructions() {
 
       {/* FAQ */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-800 mb-3">
+        <h3 className="text-sm font-semibold text-gray-200 mb-3">
           Frequently Asked Questions
         </h3>
         <div className="space-y-2">
           {FAQ.map((item, i) => (
-            <div key={i} className="border border-gray-100 rounded-xl overflow-hidden">
+            <div key={i} className="border border-white/[0.08] rounded-xl overflow-hidden">
               <button
                 onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50/80 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-white/[0.04] transition-colors"
               >
-                <span className="text-sm font-medium text-gray-700 pr-4">{item.q}</span>
+                <span className="text-sm font-medium text-gray-300 pr-4">{item.q}</span>
                 <svg
                   className={`w-4 h-4 text-gray-400 flex-shrink-0 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`}
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
@@ -152,7 +152,7 @@ export default function CalendarInstructions() {
               </button>
               {openFaq === i && (
                 <div className="px-4 pb-3 animate-fade-in">
-                  <p className="text-sm text-gray-500 leading-relaxed">{item.a}</p>
+                  <p className="text-sm text-gray-400 leading-relaxed">{item.a}</p>
                 </div>
               )}
             </div>

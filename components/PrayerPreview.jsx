@@ -26,10 +26,10 @@ export default function PrayerPreview({ prayers, address }) {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-gray-800">
+        <h3 className="text-sm font-semibold text-gray-200">
           Today&apos;s Prayer Times
         </h3>
-        <span className="text-xs text-emerald-600 font-medium bg-emerald-50 px-2.5 py-1 rounded-full">
+        <span className="text-xs text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-full">
           {today}
         </span>
       </div>
@@ -38,17 +38,17 @@ export default function PrayerPreview({ prayers, address }) {
         {prayers.map((prayer, i) => (
           <div
             key={prayer.name}
-            className={`flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-300 opacity-0 animate-fade-in-up stagger-${i + 1} hover:bg-emerald-50/50`}
+            className={`flex items-center justify-between py-3 px-4 rounded-xl transition-all duration-300 opacity-0 animate-fade-in-up stagger-${i + 1} hover:bg-white/[0.03]`}
           >
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-emerald-100 flex items-center justify-center">
-                <svg className="w-4.5 h-4.5 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <div className="w-9 h-9 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+                <svg className="w-4.5 h-4.5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d={PRAYER_ICONS[prayer.name]} />
                 </svg>
               </div>
-              <span className="font-medium text-gray-800">{prayer.name}</span>
+              <span className="font-medium text-gray-200">{prayer.name}</span>
             </div>
-            <span className="font-mono text-sm font-semibold text-emerald-700 tabular-nums">
+            <span className="font-mono text-sm font-semibold text-emerald-400 tabular-nums">
               {formatTime12h(prayer.time)}
             </span>
           </div>

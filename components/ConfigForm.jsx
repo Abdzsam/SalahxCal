@@ -24,11 +24,11 @@ export default function ConfigForm({ onGenerate, loading }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label htmlFor="address" className="block text-sm font-semibold text-gray-800 mb-2">
+        <label htmlFor="address" className="block text-sm font-semibold text-gray-200 mb-2">
           Your Location
         </label>
         <div className="relative">
-          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
           </svg>
@@ -38,7 +38,7 @@ export default function ConfigForm({ onGenerate, loading }) {
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder="City, Country  (e.g. Toronto, Canada)"
-            className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all duration-200 text-gray-900 placeholder-gray-400"
+            className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-white/[0.08] bg-white/[0.04] focus:bg-white/[0.06] focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 outline-none transition-all duration-200 text-gray-100 placeholder-gray-500"
             required
           />
         </div>
@@ -46,17 +46,17 @@ export default function ConfigForm({ onGenerate, loading }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="timezone" className="block text-sm font-semibold text-gray-800 mb-2">
+          <label htmlFor="timezone" className="block text-sm font-semibold text-gray-200 mb-2">
             Timezone
           </label>
           <select
             id="timezone"
             value={tz}
             onChange={(e) => setTz(e.target.value)}
-            className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
+            className="w-full px-4 py-3.5 rounded-xl border border-white/[0.08] bg-white/[0.04] focus:bg-white/[0.06] focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 outline-none transition-all duration-200 text-gray-100 appearance-none cursor-pointer"
           >
             {timezones.map((zone) => (
-              <option key={zone} value={zone}>
+              <option key={zone} value={zone} className="bg-gray-900 text-gray-100">
                 {zone.replace(/_/g, " ")}
               </option>
             ))}
@@ -64,17 +64,17 @@ export default function ConfigForm({ onGenerate, loading }) {
         </div>
 
         <div>
-          <label htmlFor="method" className="block text-sm font-semibold text-gray-800 mb-2">
+          <label htmlFor="method" className="block text-sm font-semibold text-gray-200 mb-2">
             Calculation Method
           </label>
           <select
             id="method"
             value={method}
             onChange={(e) => setMethod(Number(e.target.value))}
-            className="w-full px-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none transition-all duration-200 text-gray-900 appearance-none cursor-pointer"
+            className="w-full px-4 py-3.5 rounded-xl border border-white/[0.08] bg-white/[0.04] focus:bg-white/[0.06] focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500/50 outline-none transition-all duration-200 text-gray-100 appearance-none cursor-pointer"
           >
             {CALCULATION_METHODS.map((m) => (
-              <option key={m.value} value={m.value}>
+              <option key={m.value} value={m.value} className="bg-gray-900 text-gray-100">
                 {m.label}
               </option>
             ))}
@@ -85,7 +85,7 @@ export default function ConfigForm({ onGenerate, loading }) {
       <button
         type="submit"
         disabled={!address.trim() || loading}
-        className="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md disabled:shadow-none"
+        className="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 disabled:bg-white/[0.04] disabled:text-gray-600 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-emerald-900/30 hover:shadow-emerald-900/40 disabled:shadow-none"
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">

@@ -4,11 +4,11 @@
 
 @layer base {
   body {
-    @apply antialiased;
+    @apply antialiased bg-[#0a0f1a] text-gray-100;
   }
 
   ::selection {
-    @apply bg-emerald-200/60;
+    @apply bg-emerald-500/30;
   }
 }
 

@@ -28,7 +28,7 @@ export default function SubscriptionUrl({ url }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <h3 className="text-sm font-semibold text-gray-800">Your Subscription Link</h3>
+        <h3 className="text-sm font-semibold text-gray-200">Your Subscription Link</h3>
       </div>
 
       <div className="relative group">
