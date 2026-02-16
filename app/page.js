@@ -134,9 +134,6 @@ export default function Home() {
                 <SubscriptionUrl url={subscriptionUrl} />
               </section>
 
-              <section className="bg-[#111827] rounded-2xl border border-white/[0.06] p-6 sm:p-8">
-                <CalendarInstructions />
-              </section>
             </div>
           )}
 
@@ -164,6 +161,11 @@ export default function Home() {
               </p>
             </section>
           )}
+
+          {/* Calendar setup instructions — always visible */}
+          <section className="bg-[#111827] rounded-2xl border border-white/[0.06] p-6 sm:p-8">
+            <CalendarInstructions />
+          </section>
         </div>
 
         {/* Footer */}
