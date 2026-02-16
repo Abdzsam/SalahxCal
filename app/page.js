@@ -1,66 +1,186 @@
 "use client";
 
 import { useState } from "react";
+import Logo from "@/components/Logo";
 import ConfigForm from "@/components/ConfigForm";
+import PrayerPreview from "@/components/PrayerPreview";
 import SubscriptionUrl from "@/components/SubscriptionUrl";
 import CalendarInstructions from "@/components/CalendarInstructions";
+import { PRAYERS } from "@/lib/constants";
 
 export default function Home() {
   const [subscriptionUrl, setSubscriptionUrl] = useState("");
+  const [todayPrayers, setTodayPrayers] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [address, setAddress] = useState("");
 
-  function handleGenerate({ address, tz, method }) {
-    const params = new URLSearchParams({
-      address,
-      method: String(method),
-      tz,
-    });
-    const url = `${window.location.origin}/api/calendar.ics?${params.toString()}`;
-    setSubscriptionUrl(url);
+  async function handleGenerate({ address: addr, tz, method }) {
+    setLoading(true);
+    setError("");
+    setTodayPrayers(null);
+    setSubscriptionUrl("");
+
+    try {
+      // Validate the address by fetching today's prayer times from the Aladhan API
+      const today = new Date();
+      const dateStr = `${String(today.getDate()).padStart(2, "0")}-${String(today.getMonth() + 1).padStart(2, "0")}-${today.getFullYear()}`;
+      const res = await fetch(
+        `https://api.aladhan.com/v1/timingsByAddress/${dateStr}?address=${encodeURIComponent(addr)}&method=${method}`
+      );
+
+      if (!res.ok) {
+        throw new Error("Could not find prayer times for this location. Please check the address.");
+      }
+
+      const json = await res.json();
+
+      if (json.code !== 200 || !json.data) {
+        throw new Error("Could not find prayer times for this location. Please check the address.");
+      }
+
+      // Extract today's prayer times for the preview
+      const timings = json.data.timings;
+      const preview = PRAYERS.map((name) => ({
+        name,
+        time: (timings[name] || "").replace(/\s*\(.*\)$/, ""),
+      }));
+
+      setTodayPrayers(preview);
+      setAddress(addr);
+
+      // Build the subscription URL
+      const params = new URLSearchParams({
+        address: addr,
+        method: String(method),
+        tz,
+      });
+      setSubscriptionUrl(`${window.location.origin}/api/calendar.ics?${params.toString()}`);
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-emerald-50 to-white">
-      {/* Header */}
-      <div className="max-w-2xl mx-auto px-4 pt-16 pb-8 text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+    <main className="min-h-screen bg-gradient-to-br from-emerald-50/80 via-white to-emerald-50/40">
+      {/* Hero / Header */}
+      <header className="max-w-2xl mx-auto px-4 pt-16 sm:pt-20 pb-4 text-center">
+        <div className="flex justify-center mb-5">
+          <Logo />
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
           Salah<span className="text-emerald-600">x</span>Cal
         </h1>
-        <p className="text-lg text-gray-600">
-          Prayer times in your calendar. Any app. Free forever.
+        <p className="mt-3 text-base sm:text-lg text-gray-500 max-w-md mx-auto leading-relaxed">
+          Accurate prayer times in your calendar.
+          <br className="hidden sm:block" />
+          {" "}Subscribe once, updated forever.
         </p>
-      </div>
+
+        {/* Trust badges */}
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-400">
+          <span className="flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+            </svg>
+            Free forever
+          </span>
+          <span className="flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+            </svg>
+            No account needed
+          </span>
+          <span className="flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
+            </svg>
+            Works with any calendar
+          </span>
+        </div>
+      </header>
 
       {/* Main Content */}
-      <div className="max-w-lg mx-auto px-4 pb-16 space-y-8">
+      <div className="max-w-lg mx-auto px-4 pt-8 pb-20 space-y-6">
         {/* Config Form Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <ConfigForm onGenerate={handleGenerate} />
-        </div>
+        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+          <ConfigForm onGenerate={handleGenerate} loading={loading} />
 
-        {/* Subscription URL */}
-        {subscriptionUrl && <SubscriptionUrl url={subscriptionUrl} />}
+          {error && (
+            <div className="mt-4 p-3.5 bg-red-50 border border-red-100 rounded-xl animate-fade-in">
+              <p className="text-sm text-red-600 flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                {error}
+              </p>
+            </div>
+          )}
+        </section>
 
-        {/* Calendar Instructions */}
+        {/* Results Section */}
         {subscriptionUrl && (
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <CalendarInstructions />
+          <div className="space-y-6 animate-fade-in-up">
+            {/* Prayer Preview */}
+            {todayPrayers && (
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+                <PrayerPreview prayers={todayPrayers} address={address} />
+              </section>
+            )}
+
+            {/* Subscription URL */}
+            <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+              <SubscriptionUrl url={subscriptionUrl} />
+            </section>
+
+            {/* Calendar Instructions & FAQ */}
+            <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+              <CalendarInstructions />
+            </section>
           </div>
+        )}
+
+        {/* How it works (shown before generating) */}
+        {!subscriptionUrl && !loading && (
+          <section className="text-center py-8 opacity-0 animate-fade-in stagger-2">
+            <h2 className="text-sm font-semibold text-gray-800 mb-5">How it works</h2>
+            <div className="flex items-start justify-center gap-6 sm:gap-10">
+              {[
+                { step: "1", label: "Enter your location" },
+                { step: "2", label: "Copy the link" },
+                { step: "3", label: "Add to calendar" },
+              ].map((item, i) => (
+                <div key={i} className="flex flex-col items-center gap-2 max-w-[100px]">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold text-sm">
+                    {item.step}
+                  </div>
+                  <span className="text-xs text-gray-500 leading-snug">{item.label}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-xs text-gray-400 max-w-sm mx-auto">
+              Your calendar app automatically fetches updated prayer times.
+              No resubscribing, no manual updates, no apps to install.
+            </p>
+          </section>
         )}
       </div>
 
       {/* Footer */}
-      <footer className="text-center py-8 text-sm text-gray-400">
-        <p>
-          Open source. Powered by{" "}
+      <footer className="text-center py-8 border-t border-gray-100">
+        <p className="text-xs text-gray-400">
+          Open source. Prayer times by{" "}
           <a
             href="https://aladhan.com"
-            className="underline hover:text-gray-600"
+            className="underline underline-offset-2 hover:text-gray-600 transition-colors"
             target="_blank"
             rel="noopener noreferrer"
           >
             Aladhan API
           </a>
-          .
+          . Built for the Ummah.
         </p>
       </footer>
     </main>
