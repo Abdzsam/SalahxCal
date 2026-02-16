@@ -74,10 +74,11 @@ export default function Home() {
           <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
             Salah<span className="text-emerald-400">x</span>Cal
           </h1>
-          <p className="mt-3 text-base sm:text-lg text-gray-400 max-w-md mx-auto leading-relaxed">
-            Accurate prayer times in your calendar.
-            <br className="hidden sm:block" />
-            {" "}Subscribe once, updated forever.
+          <p className="mt-3 text-base sm:text-lg text-gray-300 max-w-md mx-auto leading-relaxed font-medium">
+            Build your day around salah — not the other way around.
+          </p>
+          <p className="mt-2 text-sm text-gray-500 max-w-sm mx-auto">
+            Subscribe once, updated forever.
           </p>
 
           {/* Trust badges */}
