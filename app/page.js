@@ -67,7 +67,7 @@ export default function Home() {
 
       <div className="relative">
         {/* Header */}
-        <header className="max-w-2xl mx-auto px-4 pt-16 sm:pt-20 pb-4 text-center">
+        <header className="max-w-2xl mx-auto px-6 pt-16 sm:pt-20 pb-4 text-center">
           <div className="flex justify-center mb-5">
             <Logo />
           </div>
@@ -105,7 +105,7 @@ export default function Home() {
         </header>
 
         {/* Main Content */}
-        <div className="max-w-lg mx-auto px-4 pt-8 pb-20 space-y-6">
+        <div className="max-w-2xl mx-auto px-4 pt-8 pb-20 space-y-6">
           {/* Config Form Card */}
           <section className="bg-[#111827] rounded-2xl border border-white/[0.06] p-6 sm:p-8">
             <ConfigForm onGenerate={handleGenerate} loading={loading} />
